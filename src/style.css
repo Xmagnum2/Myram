@@ -89,7 +89,13 @@ button:hover {
 .todo:hover{
   background-color: #d1d1d1;
 }
+.todoForm{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 .todoInput {
+  box-sizing: border-box;
   width: 100%;
   align-items: center;
   justify-content: left;
@@ -119,9 +125,9 @@ button:hover {
   border-radius: 0;
   border: none;
   transition: 0.2s;
+  border-left: 1px rgb(175, 175, 175) solid;
 }
 .todoButton:hover{
-  border: none;
   background-color: #a1a1a1;
 }
 

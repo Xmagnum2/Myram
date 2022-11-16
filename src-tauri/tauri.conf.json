@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "MemoApp",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "tauri": {
     "allowlist": {
@@ -69,10 +69,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 500,
         "resizable": true,
         "title": "MemoApp",
-        "width": 800,
+        "width": 450,
         "alwaysOnTop": true
       }
     ]

@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "MemoApp",
-    "version": "1.0.2"
+    "version": "1.0.0"
   },
   "tauri": {
     "allowlist": {
@@ -61,7 +61,7 @@
     "updater": {
       "active": true,
       "endpoints": [
-        "https://app.unlock.sh/products/97c3471d-1ba1-40c5-8553-942b9266ca74/{{current_version}}"
+        "https://dist.unlock.sh/v1/tauri/97c5324d-8f8f-4898-add3-1d926fc3ddf0/{{current_version}}"
       ],
       "dialog": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEZENTk2QUExQTgwQjVBNkUKUldSdVdndW9vV3BaL2NtU21remZHV3ZuQzVvc3NUK3lWeFlzczh4S255WUVkMkExeWVtanVtM1IK"

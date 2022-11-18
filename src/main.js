@@ -19,7 +19,7 @@ async function add(value) {
     return
   }
   if (value === undefined) value = input.value;
-  const added = append(`<div title=${value} class=todo><form class=todoForm><input class=todoInput value=${value}></input></form><button class=todoButton>Done</button></div>`, '#todoList')
+  const added = append(`<div title="${value}" class=todo><form class=todoForm><input class=todoInput value="${value}"></input></form><button class=todoButton>Done</button></div>`, '#todoList')
   added.childNodes[0].addEventListener("submit", (e) => { e.preventDefault(); e.target.childNodes[0].blur() });
   added.childNodes[0].childNodes[0].addEventListener("input", edit);
   added.childNodes[1].addEventListener("click", done);
@@ -53,7 +53,7 @@ async function setup() {
       dir: BaseDirectory.AppLocalData
     })
     content.split(" ").map(e => decodeURI(e)).forEach(add);
-    console.log(content.split(" ").map(e => decodeURI(e)));
+    console.log(content.split(" ").map(e => {console.log(decodeURI(e)); return decodeURI(e)}));
   } catch (e) {
     console.log(e);
   }

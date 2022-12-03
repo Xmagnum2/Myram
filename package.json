@@ -1,12 +1,12 @@
 {
-  "name": "MemoApp",
+  "name": "my_ram",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "tauri": "tauri"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.1.0"
+    "@tauri-apps/cli": "^1.2.1"
   }
 }

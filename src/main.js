@@ -67,6 +67,8 @@ async function setup() {
   try {
     const content = await readTextFile("storage.txt", {
       dir: BaseDirectory.Resource,
+    }) || await readTextFile("todo-list/storage.txt", {
+      dir: BaseDirectory.LocalData,
     });
     content
       .split(" ")

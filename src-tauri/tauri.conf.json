@@ -63,7 +63,10 @@
         "resizable": true,
         "title": "Myram",
         "width": 400,
-        "alwaysOnTop": true
+        "alwaysOnTop": true,
+        "x": 1130,
+        "y": 430,
+        "fileDropEnabled": false
       }
     ]
   }

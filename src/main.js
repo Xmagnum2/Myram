@@ -1,8 +1,11 @@
+// import Drag from "./drag.js";
+import Sortable from "./sortable.core.esm.js";
+
 const { BaseDirectory, readTextFile, writeTextFile } = window.__TAURI__.fs;
 
 let form, input, todoList;
-var append = (htmlStr, parentSelector) => {
-  var tmpElem;
+let append = (htmlStr, parentSelector) => {
+  let tmpElem;
 
   if (typeof htmlStr !== "string" || typeof parentSelector !== "string" || document.querySelector(parentSelector).length === 0) return;
 
@@ -13,20 +16,16 @@ var append = (htmlStr, parentSelector) => {
 };
 
 async function add(value) {
-  if (input.value === "" && value === undefined) {
+  if (!value) {
     return;
   }
-  if (value === undefined) value = input.value;
-  const added = append(`<div title="${value}" class=todo><form class=todoForm><input class=todoInput value="${value}"></input></form><button class=todoButton>Done</button></div>`, "#todoList");
-  added.childNodes[0].addEventListener("submit", (e) => {
-    e.preventDefault();
-    e.target.childNodes[0].blur();
-  });
-  added.childNodes[0].childNodes[0].addEventListener("input", edit);
-  added.childNodes[1].addEventListener("click", done);
-  input.value = "";
-  input.focus();
-  await save();
+  const added = append(`<div title="${value}" class="todo hover"><div class=todoHandle>::</div><form class=todoForm><input class=todoInput value="${value}"></input></form><button class=todoButton>Done</button></div>`, '#todoList')
+  // new Drag(added);
+
+  added.childNodes[1].childNodes[0].addEventListener("input", edit);
+  added.childNodes[1].addEventListener("submit", (e) => { e.preventDefault(); e.target.childNodes[0].blur() });
+  added.childNodes[2].addEventListener("click", done);
+  save();
 }
 
 async function edit(e) {
@@ -44,10 +43,23 @@ window.addEventListener("DOMContentLoaded", async () => {
   input = document.querySelector("#input");
   todoList = document.querySelector("#todoList");
   await setup();
-
+  new Sortable(todoList, {
+    animation: 110,
+    handle: ".todoHandle",
+    forceFallback: true,
+    onChoose: function (e) {
+      document.querySelectorAll(".todo").forEach(e => e.classList.remove("hover"));
+    },
+    onEnd: function (e) {
+      document.querySelectorAll(".todo").forEach(e => e.classList.add("hover"));
+      save();
+    }
+  })
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    await add();
+    await add(e.target.childNodes[1].value);
+    input.value = "";
+    input.focus();
   });
 });
 

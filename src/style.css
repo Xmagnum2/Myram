@@ -11,7 +11,7 @@ body {
   font-weight: 400;
 
   color: #0f0f0f;
-  background-color: #f6f6f6;
+  background-color: #f3f3f3;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -51,6 +51,7 @@ h1 {
 #input {
   height: 20px;
 }
+
 #input:focus {
   border: 1px solid black;
   outline: none;
@@ -81,29 +82,54 @@ button:hover {
 }
 
 #todoList {
+  position: relative;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   padding: 50px;
   box-sizing: border-box;
+  transition: 0.3s;
 }
+
 .todo {
+  background-color: #f3f3f3;
   width: 100%;
+  height: 45px;
   display: flex;
   border-bottom: 1px rgb(175, 175, 175) solid;
-  transition: 0.2s;
+  transition-duration: 0.2s;
+  transition-property: background-color;
+  box-sizing: border-box;
+  opacity: 0.9;
 }
+
+.sortable-ghost {
+  opacity: 0;
+}
+
 .todo:last-child {
   border-bottom: 0 none;
 }
-.todo:hover {
+
+.hover:hover {
   background-color: #d1d1d1;
 }
+
+.todoHandle {
+  position: relative;
+  padding: 10px 0;
+  box-sizing: border-box;
+  height: 100%;
+  width: 30px;
+  cursor: move;
+}
+
 .todoForm {
   width: 100%;
   margin: 0;
   padding: 0;
 }
+
 .todoInput {
   box-sizing: border-box;
   width: 100%;
@@ -118,11 +144,14 @@ button:hover {
   box-shadow: none;
   width: 100%;
   border-radius: 0;
+  height: 100%;
 }
+
 .todoInput:hover {
   box-shadow: none;
   outline: none;
 }
+
 .todoInput:focus {
   background-color: #e6e6e6;
   box-shadow: none;
@@ -137,6 +166,7 @@ button:hover {
   transition: 0.2s;
   border-left: 1px rgb(175, 175, 175) solid;
 }
+
 .todoButton:hover {
   background-color: #a1a1a1;
 }

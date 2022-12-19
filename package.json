@@ -8,5 +8,8 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.2.1"
+  },
+  "dependencies": {
+    "sortablejs": "^1.15.0"
   }
 }

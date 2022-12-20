@@ -1,4 +1,3 @@
-// import Drag from "./drag.js";
 import Sortable from "./sortable.core.esm.js";
 
 const { BaseDirectory, readTextFile, writeTextFile } = window.__TAURI__.fs;
@@ -65,9 +64,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 async function setup() {
   try {
-    const content = await readTextFile("storage.txt", {
-      dir: BaseDirectory.Resource,
-    }) || await readTextFile("todo-list/storage.txt", {
+    const content = await readTextFile("todo-list/storage.txt", {
       dir: BaseDirectory.LocalData,
     });
     content
@@ -82,12 +79,12 @@ async function setup() {
 async function save() {
   try {
     await writeTextFile(
-      "storage.txt",
+      "todo-list/storage.txt",
       Array.from(todoList.children)
         .map((e) => encodeURI(e.title))
         .join(" "),
       {
-        dir: BaseDirectory.Resource,
+        dir: BaseDirectory.LocalData,
       }
     );
   } catch (e) {

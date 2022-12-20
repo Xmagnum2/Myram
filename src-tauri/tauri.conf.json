@@ -18,7 +18,6 @@
         "readFile": true,
         "writeFile": true,
         "scope": [
-          "$RESOURCE/*",
           "$LOCALDATA/*"
         ]
       }
@@ -38,7 +37,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "todo-list",
+      "identifier": "Myram",
       "longDescription": "",
       "macOS": {
         "entitlements": null,

@@ -19,7 +19,6 @@ async function add(value) {
     return;
   }
   const added = append(`<div title="${value}" class="todo hover"><div class=todoHandle>::</div><form class=todoForm><input class=todoInput value="${value}"></input></form><button class=todoButton>Done</button></div>`, '#todoList')
-  // new Drag(added);
 
   added.childNodes[1].childNodes[0].addEventListener("input", edit);
   added.childNodes[1].addEventListener("submit", (e) => { e.preventDefault(); e.target.childNodes[0].blur() });
@@ -64,7 +63,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 async function setup() {
   try {
-    const content = await readTextFile("todo-list/storage.txt", {
+    const content = await readTextFile("Myram/storage.txt", {
       dir: BaseDirectory.LocalData,
     });
     content
@@ -79,7 +78,7 @@ async function setup() {
 async function save() {
   try {
     await writeTextFile(
-      "todo-list/storage.txt",
+      "Myram/storage.txt",
       Array.from(todoList.children)
         .map((e) => encodeURI(e.title))
         .join(" "),

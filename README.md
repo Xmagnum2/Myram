@@ -1,7 +1,5 @@
-# Tauri + Vanilla
-
-This template should help get you started developing with Tauri in vanilla HTML, CSS and Javascript.
-
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+# Myram
+Myram is super ultra simple ToDo App.
+## How to use Myram?
+That is only stacks what needs to be done right now!  
+Stack only the tasks to be done soon or by today.

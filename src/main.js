@@ -3,27 +3,26 @@ import Sortable from "./sortable.core.esm.js";
 const { BaseDirectory, readTextFile, writeTextFile } = window.__TAURI__.fs;
 
 let form, input, todoList;
-let append = (htmlStr, parentSelector) => {
-  let tmpElem;
-
-  if (typeof htmlStr !== "string" || typeof parentSelector !== "string" || document.querySelector(parentSelector).length === 0) return;
-
-  tmpElem = document.createElement("div");
-  tmpElem.innerHTML = htmlStr;
-
-  return document.querySelector(parentSelector).appendChild(tmpElem.firstChild);
-};
 
 async function add(value) {
   if (!value) {
     return;
   }
-  const added = append(`<div title="${value}" class="todo hover"><div class=todoHandle>::</div><form class=todoForm><input class=todoInput value="${value}"></input></form><button class=todoButton>Done</button></div>`, '#todoList')
 
-  added.childNodes[1].childNodes[0].addEventListener("input", edit);
-  added.childNodes[1].addEventListener("submit", (e) => { e.preventDefault(); e.target.childNodes[0].blur() });
-  added.childNodes[2].addEventListener("click", done);
+  const todoElement = createTodoElement(value);
+
+  todoElement.childNodes[1].childNodes[0].addEventListener("input", edit);
+  todoElement.childNodes[1].addEventListener("submit", (e) => { e.preventDefault(); e.target.childNodes[0].blur() });
+  todoElement.childNodes[2].addEventListener("click", done);
+
+  document.querySelector("#todoList").prepend(todoElement);
   save();
+}
+
+function createTodoElement(value){
+  const tempElm = document.createElement("div");
+  tempElm.innerHTML = `<div title="${value}" class="todo hover"><div class=todoHandle>::</div><form class=todoForm><input class=todoInput value="${value}"></input></form><button class=todoButton>Done</button></div>`
+  return tempElm.firstChild;
 }
 
 async function edit(e) {
@@ -68,6 +67,7 @@ async function setup() {
     });
     content
       .split(" ")
+      .reverse()
       .map((e) => decodeURI(e))
       .forEach(add);
   } catch (e) {

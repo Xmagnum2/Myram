@@ -2,27 +2,27 @@ import Sortable from "./sortable.core.esm.js";
 
 const { BaseDirectory, readTextFile, writeTextFile } = window.__TAURI__.fs;
 
-let form, input, todoList;
+let input, todoList;
 
-async function add(value) {
-  if (!value) {
-    return;
-  }
-
-  const todoElement = createTodoElement(value);
-
-  todoElement.childNodes[1].childNodes[0].addEventListener("input", edit);
-  todoElement.childNodes[1].addEventListener("submit", (e) => { e.preventDefault(); e.target.childNodes[0].blur() });
-  todoElement.childNodes[2].addEventListener("click", done);
-
-  document.querySelector("#todoList").prepend(todoElement);
-  save();
+function createTodoElement(value) {
+  const tempElm = document.createElement("div");
+  tempElm.innerHTML = `<div title="${value}" class="todo hover"><div class=todoHandle>::</div><form class=todoForm><input class=todoInput value="${value}"></input></form><button class=todoButton>Done</button></div>`;
+  tempElm.firstChild.childNodes[1].childNodes[0].addEventListener("input", edit);
+  tempElm.firstChild.childNodes[1].addEventListener("submit", (e) => {
+    e.preventDefault();
+    e.target.childNodes[0].blur();
+  });
+  tempElm.firstChild.childNodes[2].addEventListener("click", done);
+  return tempElm.firstChild;
 }
 
-function createTodoElement(value){
-  const tempElm = document.createElement("div");
-  tempElm.innerHTML = `<div title="${value}" class="todo hover"><div class=todoHandle>::</div><form class=todoForm><input class=todoInput value="${value}"></input></form><button class=todoButton>Done</button></div>`
-  return tempElm.firstChild;
+async function add(value) {
+  if (!value) return;
+
+  const todoElement = createTodoElement(value);
+  document.querySelector("#todoList").prepend(todoElement);
+
+  save();
 }
 
 async function edit(e) {
@@ -36,7 +36,6 @@ async function done(e) {
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
-  form = document.querySelector("#form");
   input = document.querySelector("#input");
   todoList = document.querySelector("#todoList");
   await setup();
@@ -45,14 +44,14 @@ window.addEventListener("DOMContentLoaded", async () => {
     handle: ".todoHandle",
     forceFallback: true,
     onChoose: function (e) {
-      document.querySelectorAll(".todo").forEach(e => e.classList.remove("hover"));
+      document.querySelectorAll(".todo").forEach((e) => e.classList.remove("hover"));
     },
     onEnd: function (e) {
-      document.querySelectorAll(".todo").forEach(e => e.classList.add("hover"));
+      document.querySelectorAll(".todo").forEach((e) => e.classList.add("hover"));
       save();
-    }
-  })
-  form.addEventListener("submit", async (e) => {
+    },
+  });
+  document.querySelector("#form").addEventListener("submit", async (e) => {
     e.preventDefault();
     await add(e.target.childNodes[1].value);
     input.value = "";

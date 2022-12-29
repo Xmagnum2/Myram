@@ -1,4 +1,4 @@
-import Sortable from "./sortable.core.esm.js";
+import Sortable, { AutoScroll } from "./sortable.core.esm.js";
 const { BaseDirectory, readTextFile, writeTextFile, exists, createDir } = window.__TAURI__.fs;
 
 let input, todoList;
@@ -57,7 +57,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   } catch (e) {
     console.log(e);
   }
-
+  Sortable.mount(new AutoScroll());
   new Sortable(todoList, {
     animation: 110,
     handle: ".todoHandle",
@@ -70,6 +70,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       await save();
     },
   });
+
   document.querySelector("#form").addEventListener("submit", async (e) => {
     e.preventDefault();
     await add(e.target.childNodes[1].value);

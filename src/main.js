@@ -18,8 +18,11 @@ async function edit(e) {
 }
 
 async function done(e) {
+  const value = e.composedPath()[1].title;
   e.composedPath()[1].remove();
   await save();
+  await setStock(value);
+  console.log(await getStock());
 }
 
 async function save() {
@@ -38,9 +41,33 @@ async function save() {
   }
 }
 
+async function getStock() {
+  try {
+    const data = await readTextFile("Myram/done.txt", {
+      dir: BaseDirectory.LocalData,
+    });
+    return data.split(" ").map(e => decodeURI(e));
+  } catch (e) {
+    console.log(e);
+    return [];
+  }
+}
+
+async function setStock(value) {
+  try {
+    const doneList = await getStock();
+    doneList.push(encodeURI(value))
+    await writeTextFile("Myram/done.txt", doneList.map(e => encodeURI(e)).join(" "), {
+      dir: BaseDirectory.LocalData,
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 window.addEventListener("DOMContentLoaded", async () => {
-  var e = await exists("Myram", { dir: BaseDirectory.LocalData });
-  if (!e) await createDir("Myram", { dir: BaseDirectory.LocalData, recursive: true });
+  const existMyramDir = await exists("Myram", { dir: BaseDirectory.LocalData });
+  if (!existMyramDir) await createDir("Myram", { dir: BaseDirectory.LocalData, recursive: true });
 
   input = document.querySelector("#input");
   todoList = document.querySelector("#todoList");

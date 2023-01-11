@@ -22,7 +22,9 @@ async function done(e) {
   e.composedPath()[1].remove();
   await save();
   await setHistory(value);
-  console.log(await getHistory());
+  if (historyToggle) {
+    document.querySelector("#historyContent").innerHTML += `<p title=${value}>${value}</p>`
+  }
 }
 
 async function save() {

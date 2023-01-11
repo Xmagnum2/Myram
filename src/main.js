@@ -1,7 +1,7 @@
 import Sortable, { AutoScroll } from "./sortable.core.esm.js";
 const { BaseDirectory, readTextFile, writeTextFile, exists, createDir } = window.__TAURI__.fs;
 
-let input, todoList;
+let input, todoList, historyToggle;
 
 async function add(value) {
   if (!value) return;
@@ -21,8 +21,8 @@ async function done(e) {
   const value = e.composedPath()[1].title;
   e.composedPath()[1].remove();
   await save();
-  await setStock(value);
-  console.log(await getStock());
+  await setHistory(value);
+  console.log(await getHistory());
 }
 
 async function save() {
@@ -41,23 +41,28 @@ async function save() {
   }
 }
 
-async function getStock() {
+async function getHistory() {
   try {
-    const data = await readTextFile("Myram/done.txt", {
+    const data = await readTextFile("Myram/history.txt", {
       dir: BaseDirectory.LocalData,
     });
-    return data.split(" ").map(e => decodeURI(e));
+    const history = data.split(" ");
+    if (history.shift() != new Date().getDate()) {
+      return [];
+    }
+    return history.map(e => decodeURI(e));
   } catch (e) {
     console.log(e);
     return [];
   }
 }
 
-async function setStock(value) {
+async function setHistory(value) {
   try {
-    const doneList = await getStock();
-    doneList.push(encodeURI(value))
-    await writeTextFile("Myram/done.txt", doneList.map(e => encodeURI(e)).join(" "), {
+    const history = await getHistory();
+    history.push(value)
+    history.unshift(new Date().getDate());
+    await writeTextFile("Myram/history.txt", history.map(e => encodeURI(e)).join(" "), {
       dir: BaseDirectory.LocalData,
     });
   } catch (e) {
@@ -98,6 +103,18 @@ window.addEventListener("DOMContentLoaded", async () => {
     },
   });
 
+  document.querySelector("#history").addEventListener("click", async (e) => {
+    if (!historyToggle) {
+      const history = await getHistory();
+      document.querySelector("#historyContent").innerHTML = history.map(e => `<p title=${e}>${e}</p>`).join("");
+      e.target.innerText = "Close";
+      historyToggle = true;
+    } else {
+      document.querySelector("#historyContent").innerHTML = "";
+      e.target.innerText = "History";
+      historyToggle = false;
+    }
+  });
   document.querySelector("#form").addEventListener("submit", async (e) => {
     e.preventDefault();
     await add(e.target.childNodes[1].value);

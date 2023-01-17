@@ -1,5 +1,7 @@
 import Sortable, { AutoScroll } from "./sortable.core.esm.js";
 const { BaseDirectory, readTextFile, writeTextFile, exists, createDir } = window.__TAURI__.fs;
+const { register } = window.__TAURI__.globalShortcut;
+const { appWindow } = window.__TAURI__.window;
 
 let input, todoList, historyToggle;
 
@@ -121,6 +123,18 @@ window.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
     await add(e.target.childNodes[1].value);
     input.value = "";
+    input.focus();
+  });
+
+  await appWindow.onFocusChanged(({ payload: focused }) => focused ? undefined : input.blur());
+
+  await register('Ctrl+[', async () => {
+    if (await appWindow.isVisible() && input === document.activeElement) {
+      await appWindow.hide();
+    } else {
+      await appWindow.show();
+    }
+    await appWindow.setFocus();
     input.focus();
   });
 });

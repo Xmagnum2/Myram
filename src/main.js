@@ -3,7 +3,7 @@ const { BaseDirectory, readTextFile, writeTextFile, exists, createDir } = window
 const { register } = window.__TAURI__.globalShortcut;
 const { appWindow } = window.__TAURI__.window;
 
-let input, todoList, historyToggle;
+let input, todoList, historyToggle, minimizeToggle;
 
 async function add(value) {
   if (!value) return;
@@ -129,10 +129,12 @@ window.addEventListener("DOMContentLoaded", async () => {
   await appWindow.onFocusChanged(({ payload: focused }) => focused ? undefined : input.blur());
 
   await register('Ctrl+[', async () => {
-    if (await appWindow.isVisible() && input === document.activeElement) {
-      await appWindow.hide();
+    if (!minimizeToggle && input === document.activeElement) {
+      await appWindow.minimize();
+      minimizeToggle = true;
     } else {
-      await appWindow.show();
+      await appWindow.unminimize();
+      minimizeToggle = false;
     }
     await appWindow.setFocus();
     input.focus();

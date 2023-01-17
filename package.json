@@ -1,10 +1,11 @@
 {
   "name": "my_ram",
   "private": true,
-  "version": "1.2.0",
+  "version": "1.2.1",
   "type": "module",
   "scripts": {
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "build": "bash .key"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.2.2"

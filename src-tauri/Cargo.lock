@@ -1378,7 +1378,7 @@ dependencies = [
 
 [[package]]
 name = "myram"
-version = "1.2.2"
+version = "1.2.3"
 dependencies = [
  "serde",
  "serde_json",

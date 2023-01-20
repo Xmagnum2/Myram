@@ -1,7 +1,8 @@
 import Sortable, { AutoScroll } from "./sortable.core.esm.js";
 const { BaseDirectory, readTextFile, writeTextFile, exists, createDir } = window.__TAURI__.fs;
 const { register } = window.__TAURI__.globalShortcut;
-const { appWindow } = window.__TAURI__.window;
+const { appWindow, WebviewWindowHandle } = window.__TAURI__.window;
+const { WINDOW_CLOSE_REQUESTED } = window.__TAURI__.event.TauriEvent;
 
 let input, todoList, historyToggle, minimizeToggle;
 
@@ -127,6 +128,15 @@ window.addEventListener("DOMContentLoaded", async () => {
   });
 
   await appWindow.onFocusChanged(({ payload: focused }) => focused ? undefined : input.blur());
+
+
+  var a = new WebviewWindowHandle();
+  a._handleTauriEvent(WINDOW_CLOSE_REQUESTED, ({ event, payload }) => {
+    console.log(event, payload);
+    setTimeout(function () {
+      console.log("I am the third log after 5 seconds");
+    }, 6000);
+  });
 
   await register('Ctrl+[', async () => {
     if (!minimizeToggle && input === document.activeElement) {

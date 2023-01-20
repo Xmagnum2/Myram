@@ -1,24 +1,28 @@
-body {
-  margin: 0;
-  padding-top: 20px;
-  padding-left: 50px;
-  padding-right: 50px;
-}
-
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
 
-  color: #0f0f0f;
-  background-color: #f3f3f3;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+#window {
+  position: absolute;
+  top: 1px;
+  left: 0;
+  background-color: rgba(183, 183, 183, 0.5);
+  height: calc(100vh - 1px);
+  width: 100vw;
+  border-radius: 8px;
+  padding-top: 50px;
+  padding-left: 50px;
+  padding-right: 50px;
+  box-sizing: border-box;
 }
 
 .container {
@@ -64,6 +68,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   justify-content: start;
+  background-color: #ffffff;
 }
 
 #historyContent>p {
@@ -119,7 +124,6 @@ button:hover {
   transition-duration: 0.2s;
   transition-property: background-color;
   box-sizing: border-box;
-  opacity: 0.9;
 }
 
 .sortable-ghost {
@@ -191,25 +195,34 @@ button:hover {
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    color: #f6f6f6;
-    background-color: #2f2f2f;
+  #window {
+    background-color: rgba(33, 1, 1, 0.5);
   }
 
   #history:hover {
-    background-color: #744545;
+    background-color: #0f0f0f98;
     cursor: pointer;
+  }
+
+  #historyContent {
+    background-color: #0f0f0f98;
   }
 
   input,
   button {
-    color: #ffffff;
     background-color: #0f0f0f98;
+    color: white;
+  }
+
+  #input:focus {
+    border-color: white;
+    caret-color: white;
   }
 
   .todo {
     background-color: #2f2f2f;
     border-bottom: 1px rgb(175, 175, 175) solid;
+    color: white;
   }
 
   .hover:hover {

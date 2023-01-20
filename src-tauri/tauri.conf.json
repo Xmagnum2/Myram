@@ -82,9 +82,11 @@
         "title": "Myram",
         "width": 400,
         "alwaysOnTop": true,
-        "x": 1130,
-        "y": 430,
-        "fileDropEnabled": false
+        "x": 1136,
+        "y": 462,
+        "fileDropEnabled": false,
+        "decorations": false,
+        "transparent": true
       }
     ]
   }

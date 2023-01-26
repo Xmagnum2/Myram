@@ -26,7 +26,7 @@ async function done(e) {
   await save();
   await setHistory(value);
   if (historyToggle) {
-    document.querySelector("#historyContent").innerHTML += `<p title=${value}>${value}</p>`
+    document.querySelector("#historyContent").SetHTML(`<p title=${value}>${value}</p>`);
   }
 }
 

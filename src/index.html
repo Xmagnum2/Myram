@@ -3,12 +3,14 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="stylesheet" href="window.css" />
-  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/window.css" />
+  <link rel="stylesheet" href="css/header.css" />
+  <link rel="stylesheet" href="css/todo.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tauri App</title>
-  <script type="module" src="/window.js" defer></script>
-  <script type="module" src="/main.js" defer></script>
+  <script type="module" src="js/window.js" defer></script>
+  <script type="module" src="js/main.js" defer></script>
 </head>
 
 <body>
@@ -33,11 +35,16 @@
     </div>
     <div class="container">
       <div class="head">
+        <div class="historyContainer">
+          <button id="history">History</button>
+          <div id="historyContent"></div>
+        </div>
         <form id="form" autocomplete="off">
           <input id="input" placeholder="Just to do!" />
         </form>
-        <button id="history">History</button>
-        <div id="historyContent"></div>
+        <div class="optionContainer">
+          <button id="option">Option</button>
+        </div>
       </div>
 
       <div id="todoList">

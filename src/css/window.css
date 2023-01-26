@@ -1,3 +1,15 @@
+#window {
+  position: absolute;
+  top: 1px;
+  left: 0;
+  background-color: rgba(183, 183, 183, 0.5);
+  height: calc(100vh - 1px);
+  width: 100vw;
+  border-radius: 8px;
+  padding-top: 50px;
+  box-sizing: border-box;
+}
+
 .titlebar {
   height: 30px;
   background: transparent;
@@ -42,6 +54,10 @@
 }
 
 @media (prefers-color-scheme: dark) {
+  #window {
+    background-color: rgba(33, 1, 1, 0.5);
+  }
+
   .titlebar-button:hover {
     background: rgba(255, 255, 255, 0.15);
   }

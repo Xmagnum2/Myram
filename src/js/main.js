@@ -153,7 +153,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 function createTodoElement(value) {
   const tempElm = document.createElement("div");
-  tempElm.innerHTML = `<div title="${value}" class="todo hover"><div class=todoHandle>::</div><form class=todoForm><input class=todoInput value="${value}"></input></form><button class=todoButton>Done</button></div>`;
+  tempElm.innerHTML = `<div title="${value}" class="todo"><div class=todoHandle>::</div><form class=todoForm><input class=todoInput value="${value}"></input></form><button class=todoButton>Done</button></div>`;
   tempElm.firstChild.childNodes[1].childNodes[0].addEventListener("input", edit);
   tempElm.firstChild.childNodes[1].addEventListener("submit", (e) => {
     e.preventDefault();

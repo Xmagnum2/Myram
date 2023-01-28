@@ -19,9 +19,7 @@
         "writeFile": true,
         "exists": true,
         "createDir": true,
-        "scope": [
-          "$LOCALDATA/*"
-        ]
+        "scope": ["$LOCALDATA/*"]
       },
       "globalShortcut": {
         "all": true
@@ -38,13 +36,7 @@
         "depends": []
       },
       "externalBin": [],
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
+      "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
       "identifier": "Myram",
       "longDescription": "",
       "macOS": {
@@ -68,9 +60,7 @@
     },
     "updater": {
       "active": true,
-      "endpoints": [
-        "https://gist.githubusercontent.com/Xmagnum2/f270a0c893ee2c692f73923030b5b6e2/raw"
-      ],
+      "endpoints": ["https://gist.githubusercontent.com/Xmagnum2/f270a0c893ee2c692f73923030b5b6e2/raw"],
       "dialog": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEEzQjRCMDVDRkI0NENEQTIKUldTaXpVVDdYTEMwbzcremZac0tmOE9KckR4b00zQkJyLzN2QlRITGViM1BvU2xrRGhFSGtnSnQK"
     },
@@ -88,6 +78,7 @@
         "decorations": false,
         "transparent": true
       }
-    ]
+    ],
+    "macOSPrivateApi": true
   }
 }

@@ -4,7 +4,7 @@ const { register } = window.__TAURI__.globalShortcut;
 const { appWindow, WebviewWindowHandle } = window.__TAURI__.window;
 const { WINDOW_CLOSE_REQUESTED } = window.__TAURI__.event.TauriEvent;
 
-let input, todoList, historyToggle, minimizeToggle;
+let input, todoList, minimizeToggle;
 
 async function add(value) {
   if (!value) return;
@@ -19,7 +19,6 @@ async function edit(e) {
   e.composedPath()[2].title = e.target.value;
   await save();
 }
-
 async function done(e) {
   const value = e.composedPath()[1].title;
   e.composedPath()[1].remove();
@@ -55,7 +54,7 @@ async function getHistory() {
     if (history.shift() != new Date().getDate()) {
       return [];
     }
-    return history.map(e => decodeURI(e));
+    return history.map((e) => decodeURI(e));
   } catch (e) {
     console.log(e);
     return [];
@@ -65,9 +64,9 @@ async function getHistory() {
 async function setHistory(value) {
   try {
     const history = await getHistory();
-    history.push(value)
+    history.push(value);
     history.unshift(new Date().getDate());
-    await writeTextFile("Myram/history.txt", history.map(e => encodeURI(e)).join(" "), {
+    await writeTextFile("Myram/history.txt", history.map((e) => encodeURI(e)).join(" "), {
       dir: BaseDirectory.LocalData,
     });
   } catch (e) {
@@ -108,18 +107,36 @@ window.addEventListener("DOMContentLoaded", async () => {
     },
   });
 
+  const history = await getHistory();
+  document.querySelector("#historyContent").innerHTML = history.map((e) => `<p title=${e}>${e}</p>`).join("");
+
   document.querySelector("#history").addEventListener("click", async (e) => {
-    if (!historyToggle) {
-      const history = await getHistory();
-      document.querySelector("#historyContent").innerHTML = history.map(e => `<p title=${e}>${e}</p>`).join("");
+    if (e.target.innerText === "History") {
       e.target.innerText = "Close";
-      historyToggle = true;
+      document.querySelector("#historyContent").classList.add("active");
+
+      document.querySelector("#option").innerText = "Option";
+      document.querySelector("#optionContent").classList.remove("active");
     } else {
-      document.querySelector("#historyContent").innerHTML = "";
       e.target.innerText = "History";
-      historyToggle = false;
+      document.querySelector("#historyContent").classList.remove("active");
     }
   });
+
+  document.querySelector("#option").addEventListener("click", async (e) => {
+    if (e.target.innerText === "Option") {
+      e.target.innerText = "Close";
+
+      document.querySelector("#history").innerText = "History";
+      document.querySelector("#historyContent").classList.remove("active");
+
+      document.querySelector("#optionContent").classList.add("active");
+    } else {
+      e.target.innerText = "Option";
+      document.querySelector("#optionContent").classList.remove("active");
+    }
+  });
+
   document.querySelector("#form").addEventListener("submit", async (e) => {
     e.preventDefault();
     await add(e.target.childNodes[1].value);
@@ -127,8 +144,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     input.focus();
   });
 
-  await appWindow.onFocusChanged(({ payload: focused }) => focused ? undefined : input.blur());
-
+  await appWindow.onFocusChanged(({ payload: focused }) => (focused ? undefined : input.blur()));
 
   var a = new WebviewWindowHandle();
   a._handleTauriEvent(WINDOW_CLOSE_REQUESTED, ({ event, payload }) => {
@@ -138,7 +154,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     }, 6000);
   });
 
-  await register('Ctrl+[', async () => {
+  await register("CommandOrControl+[", async () => {
     if (!minimizeToggle && input === document.activeElement) {
       await appWindow.minimize();
       minimizeToggle = true;

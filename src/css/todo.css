@@ -13,6 +13,7 @@
   transform: translate(-50%, 0);
   width: 85%;
   height: calc(100% - 20px);
+  transition: all 0.2s ease-in-out;
 }
 
 .todo {
@@ -23,15 +24,16 @@
   border-bottom: 1px rgb(175, 175, 175) solid;
   transition-duration: 0.2s;
   transition-property: background-color;
+  opacity: 1;
 }
 
 .todo:first-child {
-  border-start-start-radius: 8px;
-  border-start-end-radius: 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
-.todo:first-child>button {
-  border-start-end-radius: 8px;
+.todo:first-child > button {
+  border-top-right-radius: 8px;
 }
 
 .sortable-ghost {
@@ -40,12 +42,12 @@
 
 .todo:last-child {
   border-bottom: 0 none;
-  border-end-end-radius: 8px;
-  border-end-start-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
 
-.todo:last-child>button {
-  border-end-end-radius: 8px;
+.todo:last-child > button {
+  border-bottom-right-radius: 8px;
 }
 
 .todo:hover {

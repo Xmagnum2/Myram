@@ -1,7 +1,6 @@
 .head {
   width: 100%;
   min-width: 200px;
-  margin: 0 auto;
   display: grid;
   grid-template-columns: 23% 1fr 23%;
   grid-template-rows: 43px;
@@ -19,7 +18,6 @@
   all: unset;
   width: 100%;
   height: 100%;
-  padding: 2px 5px;
   transition-duration: 0.2s;
   position: relative;
 }
@@ -38,7 +36,7 @@
   top: 0;
   left: 0;
   opacity: 0;
-  transition-duration: 0.2s;
+  transition-duration: 0.3s;
 }
 
 .head button:hover::before {
@@ -46,26 +44,50 @@
 }
 
 #history::before {
-  background: linear-gradient(to right,
-      rgba(209, 209, 209, 1),
-      rgba(0, 0, 0, 0));
+  background: linear-gradient(to right, rgba(209, 209, 209, 1), rgba(0, 0, 0, 0));
 }
 
 #option::before {
-  background: linear-gradient(to left,
-      rgba(209, 209, 209, 1),
-      rgba(0, 0, 0, 0));
+  background: linear-gradient(to left, rgba(209, 209, 209, 1), rgba(0, 0, 0, 0));
 }
 
-#historyContent>p {
+#historyContent {
+  transition: all 0.2s ease-in-out;
+  transform: translate(-100%, 0);
+}
+#historyContent > p {
   padding: 0;
   margin: 0;
   width: 100%;
   color: rgb(134, 134, 134);
+  background-color: azure;
   text-align: left;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.active#historyContent {
+  transform: translate(0, 0);
+}
+
+.active#historyContent ~ #todoList {
+  transform: translate(100%, 0);
+  opacity: 0;
+}
+
+#optionContent {
+  transition: all 0.2s ease-in-out;
+  transform: translate(100%, 0);
+}
+
+.active#optionContent {
+  transform: translate(0, 0);
+}
+
+.active#optionContent ~ #todoList {
+  transform: translate(-200%, 0);
+  opacity: 0;
 }
 
 .head form {
@@ -83,12 +105,24 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  #history:hover {
-    background-color: #0f0f0f98;
-    cursor: pointer;
+  #input:focus {
+    border: 1px solid rgb(247, 128, 128);
+    outline: none;
   }
 
-  #historyContent {
+  #historyContent > p {
     background-color: #0f0f0f98;
+  }
+
+  #history::before {
+    background: linear-gradient(to right, #b14747ad, rgba(0, 0, 0, 0));
+  }
+
+  #option::before {
+    background: linear-gradient(to left, #b14747ad, rgba(0, 0, 0, 0));
+  }
+
+  .head button:hover {
+    color: rgb(208, 190, 28);
   }
 }

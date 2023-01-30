@@ -32,7 +32,7 @@
   border-top-right-radius: 8px;
 }
 
-.todo:first-child > button {
+.todo:first-child>button {
   border-top-right-radius: 8px;
 }
 
@@ -46,7 +46,7 @@
   border-bottom-left-radius: 8px;
 }
 
-.todo:last-child > button {
+.todo:last-child>button {
   border-bottom-right-radius: 8px;
 }
 
@@ -114,6 +114,10 @@
     background-color: #2f2f2f;
     border-bottom: 1px rgb(175, 175, 175) solid;
     color: white;
+  }
+
+  .todo:hover {
+    background-color: #744545;
   }
 
   .hover:hover {

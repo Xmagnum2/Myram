@@ -44,18 +44,19 @@
 }
 
 #history::before {
-  background: linear-gradient(to right, rgba(209, 209, 209, 1), rgba(0, 0, 0, 0));
+  background: linear-gradient(to right, rgb(255, 215, 16), rgba(0, 0, 0, 0));
 }
 
 #option::before {
-  background: linear-gradient(to left, rgba(209, 209, 209, 1), rgba(0, 0, 0, 0));
+  background: linear-gradient(to left, rgb(255, 215, 16), rgba(0, 0, 0, 0));
 }
 
 #historyContent {
   transition: all 0.2s ease-in-out;
   transform: translate(-100%, 0);
 }
-#historyContent > p {
+
+#historyContent>p {
   padding: 0;
   margin: 0;
   width: 100%;
@@ -71,7 +72,7 @@
   transform: translate(0, 0);
 }
 
-.active#historyContent ~ #todoList {
+.active#historyContent~#todoList {
   transform: translate(100%, 0);
   opacity: 0;
 }
@@ -85,7 +86,7 @@
   transform: translate(0, 0);
 }
 
-.active#optionContent ~ #todoList {
+.active#optionContent~#todoList {
   transform: translate(-200%, 0);
   opacity: 0;
 }
@@ -104,22 +105,26 @@
   outline: none;
 }
 
+button.active {
+  background-color: rgba(211, 189, 81, 0.557);
+  color: black;
+}
+
 @media (prefers-color-scheme: dark) {
   #input:focus {
     border: 1px solid rgb(247, 128, 128);
-    outline: none;
   }
 
-  #historyContent > p {
+  #historyContent>p {
     background-color: #0f0f0f98;
   }
 
   #history::before {
-    background: linear-gradient(to right, #b14747ad, rgba(0, 0, 0, 0));
+    background: linear-gradient(to right, rgb(255, 215, 16), rgba(0, 0, 0, 0));
   }
 
   #option::before {
-    background: linear-gradient(to left, #b14747ad, rgba(0, 0, 0, 0));
+    background: linear-gradient(to left, rgb(255, 215, 16), rgba(0, 0, 0, 0));
   }
 
   .head button:hover {

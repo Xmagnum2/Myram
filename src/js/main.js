@@ -113,12 +113,15 @@ window.addEventListener("DOMContentLoaded", async () => {
   document.querySelector("#history").addEventListener("click", async (e) => {
     if (e.target.innerText === "History") {
       e.target.innerText = "Close";
+      document.querySelector("#history").classList.add("active");
       document.querySelector("#historyContent").classList.add("active");
 
       document.querySelector("#option").innerText = "Option";
+      document.querySelector("#option").classList.remove("active");
       document.querySelector("#optionContent").classList.remove("active");
     } else {
       e.target.innerText = "History";
+      document.querySelector("#history").classList.remove("active");
       document.querySelector("#historyContent").classList.remove("active");
     }
   });
@@ -127,12 +130,15 @@ window.addEventListener("DOMContentLoaded", async () => {
     if (e.target.innerText === "Option") {
       e.target.innerText = "Close";
 
-      document.querySelector("#history").innerText = "History";
-      document.querySelector("#historyContent").classList.remove("active");
-
+      document.querySelector("#option").classList.add("active");
       document.querySelector("#optionContent").classList.add("active");
+
+      document.querySelector("#history").innerText = "History";
+      document.querySelector("#history").classList.remove("active");
+      document.querySelector("#historyContent").classList.remove("active");
     } else {
       e.target.innerText = "Option";
+      document.querySelector("#option").classList.remove("active");
       document.querySelector("#optionContent").classList.remove("active");
     }
   });

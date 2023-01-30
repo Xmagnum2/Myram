@@ -41,6 +41,7 @@ button {
 
 button {
   cursor: pointer;
+  background-color: transparent;
 }
 
 button:hover {
@@ -48,6 +49,7 @@ button:hover {
 }
 
 @media (prefers-color-scheme: dark) {
+
   input,
   button {
     background-color: #0f0f0f98;

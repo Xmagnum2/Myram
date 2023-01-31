@@ -13,6 +13,14 @@
   -webkit-text-size-adjust: 100%;
 }
 
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: hsla(0, 0%, 20%, 0.8);
+}
+
 .container {
   flex: 1;
   margin: 0;
@@ -49,6 +57,9 @@ button:hover {
 }
 
 @media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(231, 231, 231, 0.5);
+  }
 
   input,
   button {

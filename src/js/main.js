@@ -95,9 +95,12 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
   Sortable.mount(new AutoScroll());
   new Sortable(todoList, {
-    animation: 110,
+    animation: 80,
+    forceAutoScrollFallback: true,
+    scrollSpeed: 10,
+    scrollSensitivity: 100,
     handle: ".todoHandle",
-    forceFallback: true,
+    // forceFallback: true,
     onChoose: (e) => {
       document.querySelectorAll(".todo").forEach((e) => e.classList.remove("hover"));
     },

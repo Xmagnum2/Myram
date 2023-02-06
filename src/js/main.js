@@ -24,9 +24,10 @@ async function done(e) {
   e.composedPath()[1].remove();
   await save();
   await setHistory(value);
-  if (historyToggle) {
-    document.querySelector("#historyContent").SetHTML(`<p title=${value}>${value}</p>`);
-  }
+  const history = document.createElement("p");
+  history.title = value;
+  history.textContent = value;
+  document.querySelector("#historyContent").appendChild(history);
 }
 
 async function save() {

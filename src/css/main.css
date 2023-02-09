@@ -69,6 +69,7 @@ button:hover {
   border-radius: inherit;
   width: calc(100% - 2px);
   border: 1px solid rgb(76, 248, 128);
+  pointer-events: none;
 }
 
 @media (prefers-color-scheme: dark) {

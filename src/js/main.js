@@ -171,6 +171,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   }));
 
   document.addEventListener("keydown", (e) => {
+    if (!selectElement.elem) { selectElement.reset(document.querySelector(".todo")); return; }
     const rect = selectElement.elem.getBoundingClientRect();
     switch (e.key) {
       case "ArrowUp":
@@ -252,6 +253,7 @@ class SelectElement {
     if (this.elem.nextElementSibling) {
       this.elem = this.elem.nextElementSibling;
     } else {
+      console.log(!this.elem.classList.contains("todo"));
       if (!this.elem.classList.contains("todo")) this.elem = document.querySelector(".todo");
     }
     this.elem.classList.add("selected");
@@ -301,9 +303,7 @@ class SelectElement {
     }
   }
   reset(elem) {
-    if (this.elem) {
-      this.elem.classList.remove("selected");
-    }
+    if (this.elem) this.elem.classList.remove("selected");
     this.elem = elem;
     this.elem.classList.add("selected");
   }

@@ -1,10 +1,7 @@
 import Sortable, { AutoScroll } from "./sortable.core.esm.js";
 const { BaseDirectory, readTextFile, writeTextFile, exists, createDir } = window.__TAURI__.fs;
-const { register } = window.__TAURI__.globalShortcut;
-const { appWindow, WebviewWindowHandle } = window.__TAURI__.window;
-const { WINDOW_CLOSE_REQUESTED } = window.__TAURI__.event.TauriEvent;
 
-let input, todoList, minimizeToggle;
+let input, todoList;
 
 async function add(value) {
   if (!value) return;
@@ -19,6 +16,7 @@ async function edit(e) {
   e.composedPath()[2].title = e.target.value;
   await save();
 }
+
 async function done(e) {
   const value = e.composedPath()[1].title;
   e.composedPath()[1].remove();
@@ -90,18 +88,22 @@ window.addEventListener("DOMContentLoaded", async () => {
       .split(" ")
       .reverse()
       .map((e) => decodeURI(e))
-      .forEach(add);
+      .forEach((value) => {
+        const todoElement = createTodoElement(value);
+        document.querySelector("#todoList").prepend(todoElement);
+      });
   } catch (e) {
     console.log(e);
   }
+
   Sortable.mount(new AutoScroll());
+
   new Sortable(todoList, {
     animation: 80,
     forceAutoScrollFallback: true,
     scrollSpeed: 10,
     scrollSensitivity: 100,
     handle: ".todoHandle",
-    // forceFallback: true,
     onChoose: (e) => {
       document.querySelectorAll(".todo").forEach((e) => e.classList.remove("hover"));
     },
@@ -109,6 +111,13 @@ window.addEventListener("DOMContentLoaded", async () => {
       document.querySelectorAll(".todo").forEach((e) => e.classList.add("hover"));
       await save();
     },
+  });
+
+  document.querySelector("#input").addEventListener("focus", async (e) => {
+    const history = document.querySelector("#history");
+    const option = document.querySelector("#option");
+    if (history.classList.contains("active")) history.click();
+    if (option.classList.contains("active")) option.click();
   });
 
   const history = await getHistory();
@@ -128,6 +137,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       document.querySelector("#history").classList.remove("active");
       document.querySelector("#historyContent").classList.remove("active");
     }
+    selectElement.reset(e.target)
   });
 
   document.querySelector("#option").addEventListener("click", async (e) => {
@@ -145,6 +155,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       document.querySelector("#option").classList.remove("active");
       document.querySelector("#optionContent").classList.remove("active");
     }
+    selectElement.reset(e.target)
   });
 
   document.querySelector("#form").addEventListener("submit", async (e) => {
@@ -154,26 +165,51 @@ window.addEventListener("DOMContentLoaded", async () => {
     input.focus();
   });
 
-  await appWindow.onFocusChanged(({ payload: focused }) => (focused ? undefined : input.blur()));
+  let selectElement = new SelectElement(document.activeElement);
+  Array.from(document.getElementsByTagName('input')).forEach(e => e.addEventListener("focus", () => {
+    selectElement.reset(e.id == "input" ? e : e.parentElement.parentElement)
+  }));
 
-  var a = new WebviewWindowHandle();
-  a._handleTauriEvent(WINDOW_CLOSE_REQUESTED, ({ event, payload }) => {
-    console.log(event, payload);
-    setTimeout(function () {
-      console.log("I am the third log after 5 seconds");
-    }, 6000);
-  });
-
-  await register("CommandOrControl+[", async () => {
-    if (!minimizeToggle && input === document.activeElement) {
-      await appWindow.minimize();
-      minimizeToggle = true;
-    } else {
-      await appWindow.unminimize();
-      minimizeToggle = false;
+  document.addEventListener("keydown", (e) => {
+    const rect = selectElement.elem.getBoundingClientRect();
+    switch (e.key) {
+      case "ArrowUp":
+        e.preventDefault();
+        selectElement.moveUp();
+        if (document.querySelector("#todoList").scrollTop > selectElement.elem.offsetTop) {
+          selectElement.elem.scrollIntoView(true);
+        }
+        break;
+      case "ArrowDown":
+        e.preventDefault();
+        selectElement.moveDown();
+        if (document.querySelector("#todoList").scrollTop + document.querySelector("#todoList").clientHeight < selectElement.elem.offsetTop + rect.height + 2) {
+          selectElement.elem.scrollIntoView(false);
+        }
+        break;
+      case "ArrowLeft":
+        if (!selectElement.elem.classList.contains("todo")) {
+          e.preventDefault();
+          selectElement.moveLeft();
+        }
+        break;
+      case "ArrowRight":
+        if (!selectElement.elem.classList.contains("todo")) {
+          e.preventDefault();
+          selectElement.moveRight();
+        }
+        break;
+      case "Enter":
+        if (document.activeElement.tagName !== "BUTTON" && selectElement.elem !== document.querySelector("#input")) {
+          if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+            selectElement.done();
+          } else {
+            e.preventDefault();
+            selectElement.action();
+          }
+          break;
+        }
     }
-    await appWindow.setFocus();
-    input.focus();
   });
 });
 
@@ -187,4 +223,88 @@ function createTodoElement(value) {
   });
   tempElm.firstChild.childNodes[2].addEventListener("click", done);
   return tempElm.firstChild;
+}
+
+
+class SelectElement {
+  constructor(elem) {
+    this.elem = elem.tagName == "INPUT" ? elem : undefined;
+  }
+  moveUp() {
+    this.elem.classList.remove("selected");
+    if (this.elem.previousElementSibling) {
+      this.elem = this.elem.previousElementSibling;
+    } else if (this.elem === document.querySelector(".todo")) {
+      this.elem.querySelector('input').blur();
+      this.elem = document.querySelector("#input");
+      this.elem.focus();
+    }
+    this.elem.classList.add("selected");
+  }
+  moveDown() {
+    if (this.elem.classList.contains("active")) return;
+    if (this.elem != document.querySelector("#input")) {
+      if (this.elem.classList.contains("todo")) this.elem.querySelector('input').blur();
+    } else {
+      this.elem.blur();
+    }
+    this.elem.classList.remove("selected");
+    if (this.elem.nextElementSibling) {
+      this.elem = this.elem.nextElementSibling;
+    } else {
+      if (!this.elem.classList.contains("todo")) this.elem = document.querySelector(".todo");
+    }
+    this.elem.classList.add("selected");
+  }
+  moveLeft() {
+    if (this.elem === document.querySelector("#input")) {
+      this.elem.blur();
+      this.elem = document.querySelector("#history");
+      this.elem.click();
+    } else if (this.elem === document.querySelector("#option")) {
+      this.elem.classList.remove("selected");
+      this.elem = document.querySelector("#input");
+      this.elem.focus();
+      this.elem.classList.add("selected");
+    }
+  }
+  moveRight() {
+    if (this.elem === document.querySelector("#input")) {
+      this.elem.blur();
+      this.elem = document.querySelector("#option");
+      this.elem.click();
+    } else if (this.elem === document.querySelector("#history")) {
+      this.elem.classList.remove("selected");
+      this.elem = document.querySelector("#input");
+      this.elem.focus();
+      this.elem.classList.add("selected");
+    }
+  }
+  done() {
+    const temp = this.elem.nextElementSibling;
+    this.elem.classList.remove("selected");
+    this.elem.querySelector('button').click();
+    this.elem = temp;
+    this.elem.classList.add("selected");
+  }
+  action() {
+    if (this.elem.classList.contains("todo")) {
+      if (this.elem !== document.querySelector("#input")) {
+        if (this.elem.querySelector('input') === document.activeElement) {
+          this.elem.querySelector('input').blur();
+        } else {
+          this.elem.querySelector('input').focus();
+        }
+      }
+    } else {
+      this.elem.click();
+    }
+  }
+  reset(elem) {
+    if (this.elem) {
+      this.elem.classList.remove("selected");
+    }
+    this.elem = elem;
+    this.elem.classList.add("selected");
+  }
 }

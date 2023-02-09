@@ -56,6 +56,21 @@ button:hover {
   border-color: #396cd8;
 }
 
+.selected {
+  position: relative;
+}
+
+.todo.selected::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: calc(100% - 2px);
+  border-radius: inherit;
+  width: calc(100% - 2px);
+  border: 1px solid rgb(76, 248, 128);
+}
+
 @media (prefers-color-scheme: dark) {
   ::-webkit-scrollbar-thumb {
     background-color: rgba(231, 231, 231, 0.5);

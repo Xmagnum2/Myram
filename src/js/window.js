@@ -1,4 +1,5 @@
 const { appWindow } = window.__TAURI__.window;
+const { WINDOW_MOVED } = window.__TAURI__.event.TauriEvent;
 
 document
   .getElementById('titlebar-minimize')
@@ -30,3 +31,16 @@ function rgba2hex(orig) {
 
   return "#" + hex;
 }
+
+let timeoutID = 0;
+let delay = 500;
+appWindow.listen(WINDOW_MOVED, ({ event, payload }) => {
+  clearTimeout(timeoutID);
+  timeoutID = setTimeout(() => {
+
+    const { x, y } = payload // payload here is a `PhysicalPosition`
+    console.log('x', x);
+    console.log('y', y);
+
+  }, delay);
+})

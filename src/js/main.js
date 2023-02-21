@@ -1,6 +1,8 @@
 import Sortable, { AutoScroll } from "./sortable.core.esm.js";
+import { SelectElement } from "./selectElement.js";
 const { BaseDirectory, readTextFile, writeTextFile, exists, createDir } = window.__TAURI__.fs;
 
+const selectElement = new SelectElement();
 let input, todoList;
 
 async function add(value) {
@@ -165,7 +167,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     input.focus();
   });
 
-  let selectElement = new SelectElement(document.activeElement);
   Array.from(document.getElementsByTagName('input')).forEach(e => e.addEventListener("focus", () => {
     selectElement.reset(e.id == "input" ? e : e.parentElement.parentElement)
   }));
@@ -176,25 +177,30 @@ window.addEventListener("DOMContentLoaded", async () => {
     switch (e.key) {
       case "ArrowUp":
         e.preventDefault();
-        selectElement.moveUp();
-        if (document.querySelector("#todoList").scrollTop > selectElement.elem.offsetTop) {
-          selectElement.elem.scrollIntoView(true);
+        if (selectElement.elem.classList.contains("todo")) {
+          selectElement.moveUp();
+          if (document.querySelector("#todoList").scrollTop > selectElement.elem.offsetTop) {
+            selectElement.elem.scrollIntoView(true);
+          }
         }
         break;
       case "ArrowDown":
         e.preventDefault();
         selectElement.moveDown();
+        console.log(document.querySelector("#todoList").scrollTop + document.querySelector("#todoList").clientHeight, selectElement.elem.offsetTop + rect.height + 2);
         if (document.querySelector("#todoList").scrollTop + document.querySelector("#todoList").clientHeight < selectElement.elem.offsetTop + rect.height + 2) {
           selectElement.elem.scrollIntoView(false);
         }
         break;
       case "ArrowLeft":
+        if (input.value) break;
         if (!selectElement.elem.classList.contains("todo")) {
           e.preventDefault();
           selectElement.moveLeft();
         }
         break;
       case "ArrowRight":
+        if (input.value) break;
         if (!selectElement.elem.classList.contains("todo")) {
           e.preventDefault();
           selectElement.moveRight();
@@ -218,93 +224,13 @@ function createTodoElement(value) {
   const tempElm = document.createElement("div");
   tempElm.innerHTML = `<div title="${value}" class="todo"><div class=todoHandle>::</div><form class=todoForm><input class=todoInput value="${value}"></input></form><button class=todoButton>Done</button></div>`;
   tempElm.firstChild.childNodes[1].childNodes[0].addEventListener("input", edit);
+  tempElm.firstChild.childNodes[1].childNodes[0].addEventListener("focus", (e) => {
+    selectElement.reset(e.target.parentElement.parentElement)
+  });
   tempElm.firstChild.childNodes[1].addEventListener("submit", (e) => {
     e.preventDefault();
     e.target.childNodes[0].blur();
   });
   tempElm.firstChild.childNodes[2].addEventListener("click", done);
   return tempElm.firstChild;
-}
-
-
-class SelectElement {
-  constructor(elem) {
-    this.elem = elem.tagName == "INPUT" ? elem : undefined;
-  }
-  moveUp() {
-    this.elem.classList.remove("selected");
-    if (this.elem.previousElementSibling) {
-      this.elem = this.elem.previousElementSibling;
-    } else if (this.elem === document.querySelector(".todo")) {
-      this.elem.querySelector('input').blur();
-      this.elem = document.querySelector("#input");
-      this.elem.focus();
-    }
-    this.elem.classList.add("selected");
-  }
-  moveDown() {
-    if (this.elem.classList.contains("active")) return;
-    if (this.elem != document.querySelector("#input")) {
-      if (this.elem.classList.contains("todo")) this.elem.querySelector('input').blur();
-    } else {
-      this.elem.blur();
-    }
-    this.elem.classList.remove("selected");
-    if (this.elem.nextElementSibling) {
-      this.elem = this.elem.nextElementSibling;
-    } else {
-      console.log(!this.elem.classList.contains("todo"));
-      if (!this.elem.classList.contains("todo")) this.elem = document.querySelector(".todo");
-    }
-    this.elem.classList.add("selected");
-  }
-  moveLeft() {
-    if (this.elem === document.querySelector("#input")) {
-      this.elem.blur();
-      this.elem = document.querySelector("#history");
-      this.elem.click();
-    } else if (this.elem === document.querySelector("#option")) {
-      this.elem.classList.remove("selected");
-      this.elem = document.querySelector("#input");
-      this.elem.focus();
-      this.elem.classList.add("selected");
-    }
-  }
-  moveRight() {
-    if (this.elem === document.querySelector("#input")) {
-      this.elem.blur();
-      this.elem = document.querySelector("#option");
-      this.elem.click();
-    } else if (this.elem === document.querySelector("#history")) {
-      this.elem.classList.remove("selected");
-      this.elem = document.querySelector("#input");
-      this.elem.focus();
-      this.elem.classList.add("selected");
-    }
-  }
-  done() {
-    const temp = this.elem.nextElementSibling;
-    this.elem.classList.remove("selected");
-    this.elem.querySelector('button').click();
-    this.elem = temp;
-    this.elem.classList.add("selected");
-  }
-  action() {
-    if (this.elem.classList.contains("todo")) {
-      if (this.elem !== document.querySelector("#input")) {
-        if (this.elem.querySelector('input') === document.activeElement) {
-          this.elem.querySelector('input').blur();
-        } else {
-          this.elem.querySelector('input').focus();
-        }
-      }
-    } else {
-      this.elem.click();
-    }
-  }
-  reset(elem) {
-    if (this.elem) this.elem.classList.remove("selected");
-    this.elem = elem;
-    this.elem.classList.add("selected");
-  }
 }

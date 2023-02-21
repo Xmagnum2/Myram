@@ -2,6 +2,18 @@ const { appWindow } = window.__TAURI__.window;
 const { WINDOW_MOVED } = window.__TAURI__.event.TauriEvent;
 
 document
+  .getElementById('help')
+  .addEventListener('mouseenter', () => {
+    document.querySelector("#helpContainer").style.opacity = "1";
+    document.querySelector("#helpContainer").style.zIndex = "10";
+  });
+document
+  .getElementById('help')
+  .addEventListener('mouseleave', () => {
+    document.querySelector("#helpContainer").style.opacity = "0";
+    document.querySelector("#helpContainer").style.zIndex = "-1";
+  })
+document
   .getElementById('titlebar-minimize')
   .addEventListener('click', () => appWindow.minimize())
 document
@@ -39,8 +51,6 @@ appWindow.listen(WINDOW_MOVED, ({ event, payload }) => {
   timeoutID = setTimeout(() => {
 
     const { x, y } = payload // payload here is a `PhysicalPosition`
-    console.log('x', x);
-    console.log('y', y);
 
   }, delay);
 })

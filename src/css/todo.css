@@ -1,6 +1,9 @@
+@import url("color.css");
+
 .content {
   flex: 1;
   position: relative;
+  height: 10px;
 }
 
 #todoList {
@@ -18,17 +21,18 @@
 }
 
 .todo {
-  background-color: #f3f3f3;
+  background-color: var(--color-todo-background);
   height: 45px;
   display: grid;
   grid-template-columns: 30px 1fr 80px;
   border-bottom: 1px rgb(175, 175, 175) solid;
+  outline: 0;
   transition-duration: 0.2s;
   transition-property: background-color;
   opacity: 1;
 }
 
-.todo:first-child {
+.content>*>*:first-child {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
@@ -41,8 +45,8 @@
   opacity: 0;
 }
 
-.todo:last-child {
-  border-bottom: 0 none;
+.content>*>*:last-child {
+  border-bottom: none;
   border-bottom-right-radius: 8px;
   border-bottom-left-radius: 8px;
 }
@@ -52,7 +56,7 @@
 }
 
 .todo:hover {
-  background-color: #d1d1d1;
+  background-color: var(--color-todo-hover-background);
 }
 
 .todoHandle {
@@ -92,7 +96,7 @@
 }
 
 .todoInput:focus {
-  background-color: #e6e6e6;
+  background-color: var(--color-todo-input-focus-background);
   box-shadow: none;
   outline: none;
 }
@@ -107,33 +111,23 @@
 }
 
 .todoButton:hover {
-  background-color: #a1a1a1;
+  background-color: var(--color-todo-button-hover-background);
 }
 
-@media (prefers-color-scheme: dark) {
-  .todo {
-    background-color: #2f2f2f;
-    border-bottom: 1px rgb(175, 175, 175) solid;
-    color: white;
-  }
+.todo.selected {
+  position: relative;
+  transition: none !important;
+  background-color: var(--color-select-background) !important;
+}
 
-  .todo:hover {
-    background-color: #744545;
-  }
-
-  .hover:hover {
-    background-color: #744545;
-  }
-
-  .todoInput:focus {
-    background-color: #b46d6d;
-  }
-
-  .todoButton {
-    border-left: 1px rgb(175, 175, 175) solid;
-  }
-
-  .todoButton:hover {
-    background-color: #b46d6d;
-  }
+.todo.selected::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: calc(100% - 3px);
+  border-radius: inherit;
+  width: calc(100% - 3px);
+  border: 2px solid var(--color-select-outline);
+  pointer-events: none;
 }

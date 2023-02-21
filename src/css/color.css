@@ -1,0 +1,41 @@
+:root {
+  --color-main-color: #0f0f0f;
+  --color-input-button-background: #f3f3f3;
+
+  --color-head-color: rgb(140, 140, 140);
+  --color-head-button-active-background: rgba(211, 189, 81, 0.557);
+  --color-head-button-hover-background: rgb(251, 135, 125);
+  --color-head-button-hover-color: rgb(0, 0, 0);
+  --color-head-button-active-color: black;
+
+  --color-todo-border: rgb(117, 168, 249);
+  --color-todo-background: #f3f3f3;
+  --color-todo-hover-background: #d1d1d1;
+  --color-todo-input-focus-background: #e6e6e6;
+  --color-todo-button-hover-background: #a1a1a1;
+
+  --color-select-outline: rgb(255, 145, 117);
+  --color-select-background: rgb(255, 232, 227);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-main-color: white;
+    --color-input-button-background: #353535bd;
+
+    --color-head-color: rgb(180 180 180);
+    --color-head-button-active-background: rgba(211, 189, 81, 0.557);
+    --color-head-button-hover-background: rgb(251, 135, 125);
+    --color-head-button-hover-color: rgb(255, 255, 255);
+    --color-head-button-active-color: black;
+
+    --color-todo-border: rgb(117, 168, 249);
+    --color-todo-background: #2f2f2f;
+    --color-todo-hover-background: #4e4e4e;
+    --color-todo-input-focus-background: #966656;
+    --color-todo-button-hover-background: #b46d6d;
+
+    --color-select-outline: rgb(207, 119, 105);
+    --color-select-background: #67433a;
+  }
+}
